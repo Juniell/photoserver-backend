@@ -7,12 +7,12 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.launch
+import ru.fbear.Telegram
 import ru.fbear.VK
-import java.io.File
 
 fun Application.configureRouting() {
-    val photoDirectory = "photos" + File.separator
-    val vk = VK(photoDirectory)
+    val vk = VK()
+    val telegram = Telegram().bot
 
     routing {
         post("/photo_back/vk") {
@@ -24,6 +24,16 @@ fun Application.configureRouting() {
                         call.respondText(vk.confirmCode)
                     else
                         call.respondText("ok", status = HttpStatusCode.OK)
+                }
+            }
+        }
+
+        post("/photo_back/tgm") {
+            coroutineScope {
+                launch {
+                    val response = call.receiveText()
+                    telegram.processUpdate(response)
+                    call.respond(HttpStatusCode.OK)
                 }
             }
         }

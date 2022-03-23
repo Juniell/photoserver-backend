@@ -7,6 +7,7 @@ import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
 import ru.fbear.Info.keyAlias
 import ru.fbear.Info.keyPass
+import ru.fbear.Info.tgmToken
 import ru.fbear.Info.vkConfirmCode
 import ru.fbear.Info.vkGroupId
 import ru.fbear.Info.vkSecret
@@ -17,6 +18,7 @@ import java.security.KeyStore
 import kotlin.system.exitProcess
 
 val secrets = readDatabase()
+val photoDirectory = "photos" + File.separator
 
 fun main() {
 
@@ -59,7 +61,8 @@ fun readDatabase(): Secrets {
                 vkGroupId = row[vkGroupId],
                 vkToken = row[vkToken],
                 vkSecret = row[vkSecret],
-                vkConfirmCode = row[vkConfirmCode]
+                vkConfirmCode = row[vkConfirmCode],
+                tgmToken = row[tgmToken]
             )
         }
     } catch (e: NoSuchElementException) {
@@ -69,6 +72,7 @@ fun readDatabase(): Secrets {
         var vkToken: String? = null
         var vkSecret: String? = null
         var vkConfirmCode: String? = null
+        var tgmToken: String? = null
 
         while (keyPass == null || keyPass == "") {
             println("Enter keyPass:")
@@ -104,6 +108,11 @@ fun readDatabase(): Secrets {
             val input = readLine() ?: exitProcess(0)
             vkConfirmCode = input
         }
+        while (tgmToken == null || tgmToken == "") {
+            println("Enter tgmToken:")
+            val input = readLine() ?: exitProcess(0)
+            tgmToken = input
+        }
 
         transaction {
             Info.insert {
@@ -113,11 +122,12 @@ fun readDatabase(): Secrets {
                 it[Info.vkToken] = vkToken
                 it[Info.vkSecret] = vkSecret
                 it[Info.vkConfirmCode] = vkConfirmCode
+                it[Info.tgmToken] = tgmToken
             }
             commit()
         }
 
-        Secrets(keyPass, keyAlias, vkGroupId, vkToken, vkSecret, vkConfirmCode)
+        Secrets(keyPass, keyAlias, vkGroupId, vkToken, vkSecret, vkConfirmCode, tgmToken)
     }
 }
 
@@ -128,6 +138,7 @@ object Info : Table() {
     val vkToken = varchar("vk_token", 100)
     val vkSecret = varchar("vk_secret", 50)
     val vkConfirmCode = varchar("vk_confirm_code", 10)
+    val tgmToken = varchar("tgm_token", 100)
 }
 
 data class Secrets(
@@ -136,5 +147,6 @@ data class Secrets(
     val vkGroupId: Int,
     val vkToken: String,
     val vkSecret: String,
-    val vkConfirmCode: String
+    val vkConfirmCode: String,
+    val tgmToken: String
 )

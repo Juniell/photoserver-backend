@@ -11,7 +11,7 @@ import java.io.File
 import kotlin.random.Random
 
 
-class VK(private val photoDirectory: String) {
+class VK {
     private val groupId = secrets.vkGroupId
     private val accessToken = secrets.vkToken
     private val secret = secrets.vkSecret
