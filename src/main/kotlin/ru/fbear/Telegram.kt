@@ -24,6 +24,12 @@ class Telegram {
         dispatch {
             command("start") {
                 bot.sendMessage(ChatId.fromId(message.chat.id), startMsg)
+
+                val idPhoto = message.text?.removePrefix("/start ") ?: ""
+                if (idPhoto.isNotEmpty() && idPhoto != "/start") {
+                    bot.sendMessage(ChatId.fromId(message.chat.id), "Был получен id = $idPhoto")
+                    sendPhoto(ChatId.fromId(message.chat.id), idPhoto)
+                }
             }
 
             text {
