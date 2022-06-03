@@ -5,6 +5,7 @@ val logback_version: String by project
 plugins {
     application
     kotlin("jvm") version "1.6.10"
+    kotlin("plugin.serialization").version("1.6.21")
 }
 
 group = "ru.fbear"
@@ -25,10 +26,12 @@ repositories {
 dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktor_version")
     implementation("io.ktor:ktor-server-netty-jvm:$ktor_version")
-    implementation("ch.qos.logback:logback-classic:1.2.11")
+    implementation("io.ktor:ktor-serialization-kotlinx-json:$ktor_version")
+    implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
+    implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
     testImplementation("io.ktor:ktor-server-tests-jvm:$ktor_version")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-    implementation("io.ktor:ktor-network-tls-certificates:$ktor_version")
+    implementation("ch.qos.logback:logback-classic:1.2.11")
     implementation("com.vk.api:sdk:1.0.14")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:2.13.1")
     implementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.6.0")

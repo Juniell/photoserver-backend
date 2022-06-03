@@ -1,7 +1,11 @@
 package ru.fbear
 
+import io.ktor.serialization.kotlinx.json.*
+import io.ktor.server.application.*
 import io.ktor.server.engine.*
 import io.ktor.server.netty.*
+import io.ktor.server.plugins.*
+import kotlinx.serialization.json.Json
 import org.jetbrains.exposed.sql.*
 import org.jetbrains.exposed.sql.transactions.transaction
 import org.slf4j.LoggerFactory
@@ -16,6 +20,7 @@ import ru.fbear.plugins.configureRouting
 import java.io.File
 import java.security.KeyStore
 import kotlin.system.exitProcess
+
 
 val secrets = readDatabase()
 val photoDirectory = "photos" + File.separator
@@ -37,7 +42,15 @@ fun main() {
             keyStorePath = keyStoreFile
         }
 
-        module { configureRouting() }
+        module {
+            install(ContentNegotiation) {
+                json(Json {
+                    prettyPrint = true
+                    isLenient = true
+                })
+            }
+            configureRouting()
+        }
     }
 
     embeddedServer(Netty, environment).start(wait = true)

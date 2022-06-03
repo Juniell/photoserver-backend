@@ -25,8 +25,8 @@ class VK {
      * Обработка пришедших Gson.
      * Возвращает true, если необходимо отправить в ответ код подтверждения (т.е. пришёл confirm).
      **/
-    fun processEvent(gson: String): Boolean {
-        val event: Event = jacksonObjectMapper().readValue(gson)
+    fun processEvent(json: String): Boolean {
+        val event: Event = jacksonObjectMapper().readValue(json)
 
         if (event.secret == secret && event.group_id == groupId) {      // Проверка подлинности
             if (event.type == EventType.CONFIRM.type)

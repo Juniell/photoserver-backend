@@ -3,6 +3,7 @@ package ru.fbear
 import io.ktor.http.content.*
 import io.ktor.server.application.*
 import io.ktor.server.request.*
+import kotlinx.serialization.Serializable
 import java.io.File
 
 class PhotoServer {
@@ -22,6 +23,10 @@ class PhotoServer {
         }
     }
 }
-
-
+@Serializable
+data class BotSettings(
+    val vkId: Int,       // id группы в вк
+    val tgmId: String,      // id чата телеграмма
+    val photoLife: Int      // время хранения фотографий (дни)
+)
 
