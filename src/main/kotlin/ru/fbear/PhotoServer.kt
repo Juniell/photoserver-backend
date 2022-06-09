@@ -18,7 +18,7 @@ class PhotoServer {
                 val fileName = part.originalFileName as String
                 val fileBytes = part.streamProvider().readBytes()
 
-                File("$photoDirectory$fileName").writeBytes(fileBytes)
+                File(photoDirectory + File.separator + fileName).writeBytes(fileBytes)
             }
         }
     }

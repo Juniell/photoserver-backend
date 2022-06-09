@@ -56,7 +56,7 @@ class VK {
      * Если фото с таким названием нет, отправляется сообщение, что фото не было найдено.
      **/
     private fun sendPhoto(userId: Int, photoId: String) {
-        val file = File("$photoDirectory$photoId.jpg")
+        val file = File(photoDirectory + File.separator + "$photoId.jpg")
 
         if (!file.exists() || file.isDirectory) {
             sendMsg(userId, "Фото с id = $photoId не было найдено.")

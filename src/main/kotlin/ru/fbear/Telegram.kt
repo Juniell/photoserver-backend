@@ -47,7 +47,7 @@ class Telegram {
      * Если фото с таким названием нет, отправляется сообщение, что фото не было найдено.
      **/
     private fun sendPhoto(chatId: ChatId.Id, photoId: String) {
-        val file = File("$photoDirectory$photoId.jpg")
+        val file = File(photoDirectory + File.separator + "$photoId.jpg")
 
         if (!file.exists() || file.isDirectory) {
             bot.sendMessage(chatId, "Фото с id = $photoId не было найдено.")
