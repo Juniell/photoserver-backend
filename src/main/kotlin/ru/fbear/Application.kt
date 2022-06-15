@@ -32,8 +32,14 @@ fun main() {
     deleteOldFilesTask() // Запуск таймера на удаление старых файлов
 
     val keyStoreFile = File("keystore.jks")
-    val keystore = KeyStore.getInstance(keyStoreFile, secrets.keyPass.toCharArray())
+    val keystore: KeyStore
 
+        try {
+            keystore = KeyStore.getInstance(keyStoreFile, secrets.keyPass.toCharArray())
+        } catch (e: Exception) {
+            println("File for keyStore \"keystore.jks\" not found")
+            exitProcess(0)
+        }
     val environment = applicationEngineEnvironment {
         log = LoggerFactory.getLogger("ktor.photoserver_bot")
 

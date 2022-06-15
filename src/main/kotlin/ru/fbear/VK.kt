@@ -22,7 +22,7 @@ class VK {
     private var actor = GroupActor(groupId, accessToken)
 
     /**
-     * Обработка пришедших Gson.
+     * Обработка пришедших Json.
      * Возвращает true, если необходимо отправить в ответ код подтверждения (т.е. пришёл confirm).
      **/
     fun processEvent(json: String): Boolean {
